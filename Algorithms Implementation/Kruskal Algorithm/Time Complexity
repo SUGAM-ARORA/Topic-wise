@@ -1,0 +1,6 @@
+Kruskal’s algo requires to delete edge with minimum weight at each step. Therefore, if we 
+sort edges in ascending order : O(E log E)
+and deleting smallest element is O(1) time
+For each edge, compare whether adding the edge would create cycle: O(E)
+Time required to run loop: O(E log E + E)
+Total running time = O(E log E + E) = O(E log E)
