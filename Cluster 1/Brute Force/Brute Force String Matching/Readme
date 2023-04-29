@@ -1,1 +1,22 @@
+The simplest algorithm for string matching is a brute force algorithm, where
+we simply try to match the first character of the pattern with the first
+character of the text, and if we succeed, try to match the second character,
+and so on; if we hit a failure point, slide the pattern over one character and
+try again. When we find a match, return its starting location.
+
+Code for the brute force method:
+
+for (int i = 0; i < n-m; i++) {
+int j = 0;
+while (j < m && t[i+j] == p[j]) {
+j++;
+}
+if (j == m) return i;
+}
+printf(‘‘No match found’’);
+return -1;
+
+The outer loop is executed at most n-m+1 times, and the inner loop m
+times, for each iteration of the outer loop. Therefore, the running time of
+this algorithm is in O(nm).
 
