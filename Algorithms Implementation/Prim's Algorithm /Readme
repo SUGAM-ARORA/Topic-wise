@@ -1,0 +1,246 @@
+ Prim's algorithm is a minimum spanning tree algorithm that takes a
+graph as input and finds the subset of the edges of that graph which:
+ form a tree that includes every vertex
+ has the minimum sum of weights among all the trees that can be formed
+from the graph
+
+
+Start with arbitrary vertex in the tree. In each step add one more vertex
+with minimum weight to tree until all vertices are covered.
+Algo
+1. Start with NULL MST
+2. Add any arbitrary vertex v to set S
+3. Add a new vertex from V-S to S which is adjacent to any vertex u ϵ S 
+with minimum weight edge
+4. Repeat step 3 until all vertices are included in S.
+
+Working of Prim’s Algorithm
+ It falls under a class of algorithms called greedy algorithms that find the local
+optimum in the hopes of finding a global optimum
+ We start from one vertex and keep adding edges with the lowest weight until
+we reach our goal
+The steps for implementing Prim's algorithm are as follows:
+ Initialize the minimum spanning tree with a vertex chosen at random
+ Find all the edges that connect the tree to new vertices, find the minimum
+and add it to the tree
+ Keep repeating step 2 until we get a minimum spanning tree
+
+Step 1: Determine an arbitrary vertex as the starting vertex of the MST.
+Step 2: Follow steps 3 to 5 till there are vertices that are not included in the MST (known as fringe vertex).
+Step 3: Find edges connecting any tree vertex with the fringe vertices.
+Step 4: Find the minimum among these edges.
+Step 5: Add the chosen edge to the MST if it does not form any cycle.
+Step 6: Return the MST and exit
+
+Note: For determining a cycle, we can divide the vertices into two sets [one set contains the vertices included in MST and the other contains the fringe vertices.]
+
+Solve Problem
+Submission count: 75.9K
+Illustration of Prim’s Algorithm:
+Consider the following graph as an example for which we need to find the Minimum Spanning Tree (MST).
+
+Example of a graph
+Example of a graph
+
+Step 1: Firstly, we select an arbitrary vertex that acts as the starting vertex of the Minimum Spanning Tree. Here we have selected vertex 0 as the starting vertex.
+
+0 is selected as starting vertex
+0 is selected as starting vertex
+
+Step 2: All the edges connecting the incomplete MST and other vertices are the edges {0, 1} and {0, 7}. Between these two the edge with minimum weight is {0, 1}. So include the edge and vertex 1 in the MST.
+
+1 is added to the MST
+1 is added to the MST
+
+ Step 3: The edges connecting the incomplete MST to other vertices are {0, 7}, {1, 7} and {1, 2}. Among these edges the minimum weight is 8 which is of the edges {0, 7} and {1, 2}. Let us here include the edge {0, 7} and the vertex 7 in the MST. [We could have also included edge {1, 2} and vertex 2 in the MST]. 
+
+7 is added in the MST
+7 is added in the MST
+
+Step 4: The edges that connect the incomplete MST with the fringe vertices are {1, 2}, {7, 6} and {7, 8}. Add the edge {7, 6} and the vertex 6 in the MST as it has the least weight (i.e., 1).
+
+6 is added in the MST
+6 is added in the MST
+
+Step 5: The connecting edges now are {7, 8}, {1, 2}, {6, 8} and {6, 5}. Include edge {6, 5} and vertex 5 in the MST as the edge has the minimum weight (i.e., 2) among them.
+
+Include vertex 5 in the MST
+Include vertex 5 in the MST
+
+Step 6: Among the current connecting edges, the edge {5, 2} has the minimum weight. So include that edge and the vertex 2 in the MST.
+
+
+Include vertex 2 in the MST
+Include vertex 2 in the MST
+
+Step 7: The connecting edges between the incomplete MST and the other edges are {2, 8}, {2, 3}, {5, 3} and {5, 4}. The edge with minimum weight is edge {2, 8} which has weight 2. So include this edge and the vertex 8 in the MST.
+
+Add vertex 8 in the MST
+Add vertex 8 in the MST
+
+Step 8: See here that the edges {7, 8} and {2, 3} both have same weight which are minimum. But 7 is already part of MST. So we will consider the edge {2, 3} and include that edge and vertex 3 in the MST.
+
+Include vertex 3 in MST
+Include vertex 3 in MST
+
+Step 9: Only  the vertex 4 remains to be included. The minimum weighted edge from the incomplete MST to 4 is {3, 4}.
+
+Include vertex 4 in the MST
+Include vertex 4 in the MST
+
+The final structure of the MST is as follows and the weight of the edges of the MST is (4 + 8 + 1 + 2 + 4 + 2 + 7 + 9) = 37.
+
+The structure of the MST formed using the above method
+The structure of the MST formed using the above method
+
+Note: If we had selected the edge {1, 2} in the third step then the MST would look like the following.
+
+Structure of the alternate MST if we had selected edge {1, 2} in the MST
+Structure of the alternate MST if we had selected edge {1, 2} in the MST
+
+How to implement Prim’s Algorithm?
+Follow the given steps to utilize the Prim’s Algorithm mentioned above for finding MST of a graph:
+
+Create a set mstSet that keeps track of vertices already included in MST. 
+Assign a key value to all vertices in the input graph. Initialize all key values as INFINITE. Assign the key value as 0 for the first vertex so that it is picked first. 
+While mstSet doesn’t include all vertices 
+Pick a vertex u that is not there in mstSet and has a minimum key value. 
+Include u in the mstSet. 
+Update the key value of all adjacent vertices of u. To update the key values, iterate through all adjacent vertices. 
+For every adjacent vertex v, if the weight of edge u-v is less than the previous key value of v, update the key value as the weight of u-v.
+The idea of using key values is to pick the minimum weight edge from the cut. The key values are used only for vertices that are not yet included in MST, the key value for these vertices indicates the minimum weight edges connecting them to the set of vertices included in MST.
+
+Below is the implementation of the approach:
+
+
+// A C++ program for Prim's Minimum
+// Spanning Tree (MST) algorithm. The program is
+// for adjacency matrix representation of the graph
+ 
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// Number of vertices in the graph
+#define V 5
+ 
+// A utility function to find the vertex with
+// minimum key value, from the set of vertices
+// not yet included in MST
+int minKey(int key[], bool mstSet[])
+{
+    // Initialize min value
+    int min = INT_MAX, min_index;
+ 
+    for (int v = 0; v < V; v++)
+        if (mstSet[v] == false && key[v] < min)
+            min = key[v], min_index = v;
+ 
+    return min_index;
+}
+ 
+// A utility function to print the
+// constructed MST stored in parent[]
+void printMST(int parent[], int graph[V][V])
+{
+    cout << "Edge \tWeight\n";
+    for (int i = 1; i < V; i++)
+        cout << parent[i] << " - " << i << " \t"
+             << graph[i][parent[i]] << " \n";
+}
+ 
+// Function to construct and print MST for
+// a graph represented using adjacency
+// matrix representation
+void primMST(int graph[V][V])
+{
+    // Array to store constructed MST
+    int parent[V];
+ 
+    // Key values used to pick minimum weight edge in cut
+    int key[V];
+ 
+    // To represent set of vertices included in MST
+    bool mstSet[V];
+ 
+    // Initialize all keys as INFINITE
+    for (int i = 0; i < V; i++)
+        key[i] = INT_MAX, mstSet[i] = false;
+ 
+    // Always include first 1st vertex in MST.
+    // Make key 0 so that this vertex is picked as first
+    // vertex.
+    key[0] = 0;
+   
+    // First node is always root of MST
+    parent[0] = -1;
+ 
+    // The MST will have V vertices
+    for (int count = 0; count < V - 1; count++) {
+         
+        // Pick the minimum key vertex from the
+        // set of vertices not yet included in MST
+        int u = minKey(key, mstSet);
+ 
+        // Add the picked vertex to the MST Set
+        mstSet[u] = true;
+ 
+        // Update key value and parent index of
+        // the adjacent vertices of the picked vertex.
+        // Consider only those vertices which are not
+        // yet included in MST
+        for (int v = 0; v < V; v++)
+ 
+            // graph[u][v] is non zero only for adjacent
+            // vertices of m mstSet[v] is false for vertices
+            // not yet included in MST Update the key only
+            // if graph[u][v] is smaller than key[v]
+            if (graph[u][v] && mstSet[v] == false
+                && graph[u][v] < key[v])
+                parent[v] = u, key[v] = graph[u][v];
+    }
+ 
+    // Print the constructed MST
+    printMST(parent, graph);
+}
+ 
+// Driver's code
+int main()
+{
+    int graph[V][V] = { { 0, 2, 0, 6, 0 },
+                        { 2, 0, 3, 8, 5 },
+                        { 0, 3, 0, 0, 7 },
+                        { 6, 8, 0, 0, 9 },
+                        { 0, 5, 7, 9, 0 } };
+ 
+    // Print the solution
+    primMST(graph);
+ 
+    return 0;
+}
+ 
+// This code is contributed by rathbhupendra
+Output
+Edge     Weight
+0 - 1     2 
+1 - 2     3 
+0 - 3     6 
+1 - 4     5 
+Time Complexity: O(V2), If the input graph is represented using an adjacency list, then the time complexity of Prim’s algorithm can be reduced to O(E * logV) with the help of a binary heap.  In this implementation, we are always considering the spanning tree to start from the root of the graph
+Auxiliary Space: O(V)
+
+
+Other Implementations of Prim’s Algorithm:
+Given below are some other implementations of Prim’s Algorithm
+
+Prim’s Algorithm for Adjacency Matrix Representation – In this article we have discussed the method of implementing Prim’s Algorithm if the graph is represented by an adjacency matrix.
+Prim’s Algorithm for Adjacency List Representation – In this article Prim’s Algorithm implementation is described for graphs represented by an adjacency list.
+Prim’s Algorithm using Priority Queue: In this article, we have discussed a time-efficient approach to implement Prim’s algorithm.
+ Prim’s algorithm for finding the minimum spanning tree (MST):
+Advantages:
+Prim’s algorithm is guaranteed to find the MST in a connected, weighted graph.
+It has a time complexity of O(E log V) using a binary heap or Fibonacci heap, where E is the number of edges and V is the number of vertices.
+It is a relatively simple algorithm to understand and implement compared to some other MST algorithms.
+Disadvantages:
+Like Kruskal’s algorithm, Prim’s algorithm can be slow on dense graphs with many edges, as it requires iterating over all edges at least once.
+Prim’s algorithm relies on a priority queue, which can take up extra memory and slow down the algorithm on very large graphs.
+The choice of starting node can affect the MST output, which may not be desirable in some applications.
