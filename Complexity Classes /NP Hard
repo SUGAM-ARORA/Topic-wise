@@ -1,0 +1,10 @@
+ Suppose we have two problems, A and B where Problem B is a NP class problem
+ If problem A can be reduced or converted to problem B, and this reduction takes a
+polynomial amount of time
+ A  B (in polynomial time)
+ Then we can say that if A is a NP hard problem (A is reducible to B)
+ B also becomes a NP hard problem
+
+ An NP-hard problem is at least as hard as the hardest problem in NP
+ A problem is classified as NP-Hard when an algorithm for solving it can be translated to
+solve any NP problem
