@@ -1,0 +1,121 @@
+0/1 Knapsack using Branch and Bound
+25
+FIFO, LIFO, and Least Cost (LC) branch and bound solution for knapsack problem
+Upper bound, u = -sumipi
+Lower bound, Cost, c = -sumipi
+xi
+(with fraction)
+26
+then
+LC branch and bound algorithm for 
+knapsack problem:
+27
+N=4
+28
+Fixed Size Solution:
+Include first three items as including 4
+th item will exceed the capacity
+u(1)
+c (1) = -(p1+p2+p3+ frac(15))
+= -(10+10+12+ 18/9*3)
+= -38
+u=
+u=-32
+NOTE: If we are getting smaller upper bound
+(u); then update the upper bound (u).
+29
+30
+u(2)
+c (2) = -(p1+p2+p3+ frac(15))
+= -(10+10+12+ 18/9*3)
+= -38
+u=-32
+u=-32
+31
+u(3) = -(p2+p3)
+= -(10+12)
+= -22
+c (3) = -(p2+p3+ frac(15))
+= -(10+12+ 18/9*5)
+= -32
+Node 3: Exclusion of item 1 at node 1
+If c(2)>u
+then kill the node
+If c(3)>u
+then kill the node
+u=-32
+u=-32
+32
+Node 4: Inclusion of item 2 at node 2
+u(4)
+c (4) = -(p1+p2+p3+ frac(15))
+= -(10+10+12+ 18/9*3)
+= -38
+Node 5: Exclusion of item 2 at node 2
+u(5) = -(p1+p3)
+= -(10+12)
+= -22
+c (5) = -(p1+p3+ frac(15))
+= -(10+12+ 18/9*7)
+= -36
+u=-32
+u=-32
+33
+34
+Node 6: Inclusion of item 3 at node4
+u(6)
+c (6) = -(p1+p2+p3+ frac(15))
+= -(10+10+12+ 18/9*3)
+= -38
+Node 7: Exclusion of item 3 at node 4
+u(7) = -(p1+p2+p4)
+= -(10+10+18)
+= -38
+c (7) = -(p1+p2+p4+ frac(15))
+= -(10+10+18+ 0)
+= -38
+u=-32
+u=-38
+35
+u=-38
+36
+c(3)>u
+u=-38
+c(5)>u
+37
+Node 8: Inclusion of item 4 at node7
+c (8) = -(p1+p2+p4+ frac(15))
+= -(10+10+18+ 0)
+= -38
+Node 9: Exclusion of item 4 at node 7
+u(9) = -(p1+p2)
+= -(10+10)
+= -20
+c (9) = -(p1+p2+ frac(15))
+= -(10+10+ 0)
+= -20
+u=-38
+u=-38
+u(8) = -(p1+p2+p4)
+= -(10+10+18)
+= -38
+38
+Solution is {1, 1, 0, 1}
+Profit is 10+10+0+18= 38
+Weight is 2+4+0+9=15
+At last level, node 8 has minimum cost
+Node 8 would be the answer node
+By tracing from node 8 to root, we get item 4, 2 and 1 in the
+knapsack.
+Question
+39
+40
+ In LC approach, node 2 would be selected as E-Node as it has minimum (×)
+ But in FIFO approach, all child of node 2 and 3 are expanded and the most promising child
+becomes E-node.
+41
+42
+Node 12 has minimum cost function value, so it will be
+the answer node
+Solution= {1 1 0 1}
+profit = 10 + 10 + 0 + 18 = 38
