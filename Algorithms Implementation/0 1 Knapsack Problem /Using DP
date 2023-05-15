@@ -1,0 +1,292 @@
+What is the 0/1 Knapsack Problem?
+We are given N items where each item has some weight and profit associated with it. We are also given a bag with capacity W, [i.e., the bag can hold at most W weight in it]. The target is to put the items into the bag such that the sum of profits associated with them is the maximum possible. 
+
+Note: The constraint here is we can either put an item completely into the bag or cannot put it at all [It is not possible to put a part of an item into the bag].
+
+Examples:
+Input: N = 3, W = 4, profit[] = {1, 2, 3}, weight[] = {4, 5, 1}
+Output: 3
+Explanation: There are two items which have weight less than or equal to 4. If we select the item with weight 4, the possible profit is 1. And if we select the item with weight 1, the possible profit is 3. So the maximum possible profit is 3. Note that we cannot put both the items with weight 4 and 1 together as the capacity of the bag is 4.
+
+Input: N = 3, W = 3, profit[] = {1, 2, 3}, weight[] = {4, 5, 6}
+Output: 0
+
+
+Recommended Problem
+0 - 1 Knapsack Problem
+Dynamic Programming
+Algorithms
+Flipkart
+Morgan Stanley
++9 more
+Solve ProblemSubmission count: 3L
+0/1 Knapsack Problem using recursion:
+To solve the problem follow the below idea:
+
+A simple solution is to consider all subsets of items and calculate the total weight and profit of all subsets. Consider the only subsets whose total weight is smaller than W. From all such subsets, pick the subset with maximum profit.
+
+Optimal Substructure: To consider all subsets of items, there can be two cases for every item. 
+
+Case 1: The item is included in the optimal subset.
+Case 2: The item is not included in the optimal set.
+Follow the below steps to solve the problem:
+
+The maximum value obtained from ‘N’ items is the max of the following two values. 
+
+Maximum value obtained by N-1 items and W weight (excluding nth item)
+Value of nth item plus maximum value obtained by N-1 items and (W – weight of the Nth item) [including Nth item].
+If the weight of the ‘Nth‘ item is greater than ‘W’, then the Nth item cannot be included and Case 1 is the only possibility.
+Below is the implementation of the above approach: 
+
+C
+
+/* A Naive recursive implementation
+of 0-1 Knapsack problem */
+#include <stdio.h>
+ 
+// A utility function that returns
+// maximum of two integers
+int max(int a, int b) { return (a > b) ? a : b; }
+ 
+// Returns the maximum value that can be
+// put in a knapsack of capacity W
+int knapSack(int W, int wt[], int val[], int n)
+{
+    // Base Case
+    if (n == 0 || W == 0)
+        return 0;
+ 
+    // If weight of the nth item is more than
+    // Knapsack capacity W, then this item cannot
+    // be included in the optimal solution
+    if (wt[n - 1] > W)
+        return knapSack(W, wt, val, n - 1);
+ 
+    // Return the maximum of two cases:
+    // (1) nth item included
+    // (2) not included
+    else
+        return max(
+            val[n - 1]
+                + knapSack(W - wt[n - 1], wt, val, n - 1),
+            knapSack(W, wt, val, n - 1));
+}
+ 
+// Driver code
+int main()
+{
+    int profit[] = { 60, 100, 120 };
+    int weight[] = { 10, 20, 30 };
+    int W = 50;
+    int n = sizeof(profit) / sizeof(profit[0]);
+    printf("%d", knapSack(W, weight, profit, n));
+    return 0;
+}
+C++
+
+/* A Naive recursive implementation of
+ 0-1 Knapsack problem */
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// A utility function that returns
+// maximum of two integers
+int max(int a, int b) { return (a > b) ? a : b; }
+ 
+// Returns the maximum value that
+// can be put in a knapsack of capacity W
+int knapSack(int W, int wt[], int val[], int n)
+{
+ 
+    // Base Case
+    if (n == 0 || W == 0)
+        return 0;
+ 
+    // If weight of the nth item is more
+    // than Knapsack capacity W, then
+    // this item cannot be included
+    // in the optimal solution
+    if (wt[n - 1] > W)
+        return knapSack(W, wt, val, n - 1);
+ 
+    // Return the maximum of two cases:
+    // (1) nth item included
+    // (2) not included
+    else
+        return max(
+            val[n - 1]
+                + knapSack(W - wt[n - 1], wt, val, n - 1),
+            knapSack(W, wt, val, n - 1));
+}
+ 
+// Driver code
+int main()
+{
+    int profit[] = { 60, 100, 120 };
+    int weight[] = { 10, 20, 30 };
+    int W = 50;
+    int n = sizeof(profit) / sizeof(profit[0]);
+    cout << knapSack(W, weight, profit, n);
+    return 0;
+}
+
+
+
+
+
+Time Complexity: O(N * W). As redundant calculations of states are avoided.
+Auxiliary Space: O(N * W) + O(N). The use of a 2D array data structure for storing intermediate states and O(N) auxiliary stack space(ASS) has been used for recursion stack
+
+0/1 Knapsack Problem using dynamic programming:
+To solve the problem follow the below idea:
+
+Since subproblems are evaluated again, this problem has Overlapping Sub-problems property. So the 0/1 Knapsack problem has both properties (see this and this) of a dynamic programming problem. Like other typical Dynamic Programming(DP) problems, re-computation of the same subproblems can be avoided by constructing a temporary array K[][] in a bottom-up manner. 
+
+Follow the below steps to solve the problem:
+
+Consider the same cases as mentioned in the recursive approach. 
+In a DP[][] table let’s consider all the possible weights from ‘1’ to ‘W’ as the columns and the element that can be kept as rows. 
+The state DP[i][j] will denote the maximum value of ‘j-weight’ considering all values from ‘1 to ith‘. So if we consider ‘wi‘ (weight in ‘ith‘ row) we can fill it in all columns which have ‘weight values > wi‘. Now two possibilities can take place: 
+Fill ‘wi‘ in the given column.
+Do not fill ‘wi‘ in the given column.
+Now we have to take a maximum of these two possibilities, 
+Formally if we do not fill the ‘ith‘ weight in the ‘jth‘ column then the DP[i][j] state will be the same as DP[i-1][j] 
+But if we fill the weight, DP[i][j] will be equal to the value of (‘wi‘+ value of the column weighing ‘j-wi’) in the previous row. 
+So we take the maximum of these two possibilities to fill the current state. 
+Illustration:
+
+Below is the illustration of the above approach:
+
+Let, weight[] = {1, 2, 3}, profit[] = {10, 15, 40}, Capacity = 6
+
+If no element is filled, then the possible profit is 0.
+weight⇢
+item⇣/	0	1	2	3	4	5	6
+0	0	0	0	0	0	0	0
+1	 	 	 	 	 	 	 
+2	 	 	 	 	 	 	 
+3	 	 	 	 	 	 	 
+For filling the first item in the bag: If we follow the above mentioned procedure, the table will look like the following.
+weight⇢
+item⇣/	0	1	2	3	4	5	6
+0	0	0	0	0	0	0	0
+1	0	10	10	10	10	10	10
+2	 	 	 	 	 	 	 
+3	 	 	 	 	 	 	 
+For filling the second item:  
+When j = 2, then maximum possible profit is max (10, DP[1][2-2] + 15) = max(10, 15) = 15.
+When j = 3, then maximum possible profit is  max(2 not put, 2 is put into bag) = max(DP[1][3], 15+DP[1][3-2]) = max(10, 25) = 25.
+weight⇢
+item⇣/	0	1	2	3	4	5	6
+0	0	0	0	0	0	0	0
+1	0	10	10	10	10	10	10
+2	0	10	15	25	25	25	25
+3	 	 	 	 	 	 	 
+For filling the third item:
+When j = 3, the maximum possible profit is max(DP[2][3], 40+DP[2][3-3]) = max(25, 40) = 40.
+When j = 4, the maximum possible profit is max(DP[2][4], 40+DP[2][4-3]) = max(25, 50) = 50.
+When j = 5, the maximum possible profit is max(DP[2][5], 40+DP[2][5-3]) = max(25, 55) = 55.
+When j = 6, the maximum possible profit is max(DP[2][6], 40+DP[2][6-3]) = max(25, 65) = 65.
+weight⇢
+item⇣/	0	1	2	3	4	5	6
+0	0	0	0	0	0	0	0
+1	0	10	10	10	10	10	10
+2	0	10	15	25	25	25	25
+3	0	10	15	40	50	55	65
+Below is the implementation of the above approach: 
+
+C
+
+// A Dynamic Programming based
+// solution for 0-1 Knapsack problem
+#include <stdio.h>
+ 
+// A utility function that returns
+// maximum of two integers
+int max(int a, int b) { return (a > b) ? a : b; }
+ 
+// Returns the maximum value that
+// can be put in a knapsack of capacity W
+int knapSack(int W, int wt[], int val[], int n)
+{
+    int i, w;
+    int K[n + 1][W + 1];
+ 
+    // Build table K[][] in bottom up manner
+    for (i = 0; i <= n; i++) {
+        for (w = 0; w <= W; w++) {
+            if (i == 0 || w == 0)
+                K[i][w] = 0;
+            else if (wt[i - 1] <= w)
+                K[i][w] = max(val[i - 1]
+                                  + K[i - 1][w - wt[i - 1]],
+                              K[i - 1][w]);
+            else
+                K[i][w] = K[i - 1][w];
+        }
+    }
+ 
+    return K[n][W];
+}
+ 
+// Driver Code
+int main()
+{
+    int profit[] = { 60, 100, 120 };
+    int weight[] = { 10, 20, 30 };
+    int W = 50;
+    int n = sizeof(profit) / sizeof(profit[0]);
+    printf("%d", knapSack(W, weight, profit, n));
+    return 0;
+}
+C++
+
+// A dynamic programming based
+// solution for 0-1 Knapsack problem
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// A utility function that returns
+// maximum of two integers
+int max(int a, int b) { return (a > b) ? a : b; }
+ 
+// Returns the maximum value that
+// can be put in a knapsack of capacity W
+int knapSack(int W, int wt[], int val[], int n)
+{
+    int i, w;
+    vector<vector<int> > K(n + 1, vector<int>(W + 1));
+ 
+    // Build table K[][] in bottom up manner
+    for (i = 0; i <= n; i++) {
+        for (w = 0; w <= W; w++) {
+            if (i == 0 || w == 0)
+                K[i][w] = 0;
+            else if (wt[i - 1] <= w)
+                K[i][w] = max(val[i - 1]
+                                  + K[i - 1][w - wt[i - 1]],
+                              K[i - 1][w]);
+            else
+                K[i][w] = K[i - 1][w];
+        }
+    }
+    return K[n][W];
+}
+ 
+// Driver Code
+int main()
+{
+    int profit[] = { 60, 100, 120 };
+    int weight[] = { 10, 20, 30 };
+    int W = 50;
+    int n = sizeof(profit) / sizeof(profit[0]);
+ 
+    cout << knapSack(W, weight, profit, n);
+ 
+    return 0;
+}
+
+
+
+Time Complexity: O(N * W). where ‘N’ is the number of elements and ‘W’ is capacity. 
+Auxiliary Space: O(N * W). The use of a 2-D array of size ‘N*W’.
