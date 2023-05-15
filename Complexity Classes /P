@@ -1,0 +1,12 @@
+ P means Polynomial Time
+ Class P refers to the set of decision problems that can be solved by a deterministic
+algorithm in polynomial time
+ In other words, P is the set of problems for which there exists an algorithm that can find
+the solution in a reasonable amount of time, where the running time of the algorithm is
+proportional to a polynomial function of the input size
+ O(1), O(n), O(n²), etc
+
+Examples :
+ Sorting a list of n elements
+ Searching a smallest element in an array
+ Minimal Spanning Tree
