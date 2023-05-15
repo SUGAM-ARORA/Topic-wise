@@ -1,0 +1,12 @@
+ Non-deterministic Polynomial Time
+ Collection of decision problems that can be solved by a non-deterministic algorithm in
+polynomial time
+ The class NP refers to the set of decision problems for which a solution can be verified in
+polynomial time by a non- deterministic algorithm
+ Convert exponential into polynomial with non-deterministic algorithm
+ Some statements are non-deterministic
+
+Examples :
+ 0/1 Knapsack
+ Travelling Salesperson
+ Sudoku
