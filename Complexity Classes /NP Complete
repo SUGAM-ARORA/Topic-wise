@@ -1,0 +1,7 @@
+ A problem is NP-complete if it is both NP and NP-hard
+ Suppose we have 2 problems R and Q
+ R is a NP-Complete problem and it is reducible to Q
+ R  Q (in polynomial time) Then Q is at least as hard as R
+ Since R is an NP-hard problem, therefore Q will also be at least NP-hard, it may be NPcomplete also
+ If one NP-Complete problem can be solved in polynomial time, then all NP problems can
+solved in polynomial time
